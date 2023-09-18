@@ -77,7 +77,7 @@ int main()
 		if (output_name.is_open()) {
 			while (!output_name.eof()) {
 				string temporary;
-				getline(output_name, temporary); //днаюбхрэ напюанрйс хяйкчвемхи
+				getline(output_name, temporary);
 				cout << temporary << "\n";
 			}
 		}
