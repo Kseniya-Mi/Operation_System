@@ -10,6 +10,8 @@ int min_value = 0;
 int sum_of_elements = 0;
 int arifm = 0;
 
+CRITICAL_SECTION cs;
+
 DWORD WINAPI min_max(LPVOID)
 {
 	max_value = arr[0];
@@ -29,8 +31,12 @@ DWORD WINAPI min_max(LPVOID)
 		Sleep(7);
 	}
 
+	EnterCriticalSection(&cs);
+
 	cout << "Minimal element of array: " << min_value << "\n";
 	cout << "Maximal element of array: " << max_value << "\n";
+
+	LeaveCriticalSection(&cs);
 
 	return 0;
 }
@@ -46,7 +52,11 @@ DWORD WINAPI average(LPVOID)
 
 	arifm = sum_of_elements / size_of_array;
 
+	EnterCriticalSection(&cs);
+
 	cout << "Arithmetical mean: " << arifm << "\n";
+
+	LeaveCriticalSection(&cs);
 
 	return 0;
 }
@@ -59,6 +69,8 @@ int main()
 
 	HANDLE average_hThread;
 	DWORD average_IDThread;
+
+	InitializeCriticalSection(&cs);
 
 	cout << "Eneter size of array ";
 	cin >> size_of_array;
@@ -73,8 +85,15 @@ int main()
 
 	min_max_hThread = CreateThread(NULL, 0, min_max, NULL, 0, &min_max_IDThread);
 	average_hThread = CreateThread(NULL, 0, average, NULL, 0, &average_IDThread);
+
+	if (min_max_hThread == NULL || average_hThread == NULL)
+	{
+		return GetLastError();
+	}
+
+    WaitForSingleObject(average_hThread, INFINITE);
 	WaitForSingleObject(min_max_hThread, INFINITE);
-	WaitForSingleObject(average_hThread, INFINITE);
+	
 
 	for (int i = 0; i < size_of_array; i++)
 	{
@@ -89,8 +108,12 @@ int main()
 		cout << arr[i] << " ";
 	}
 
+	DeleteCriticalSection(&cs);
+
 	CloseHandle(min_max_hThread);
 	CloseHandle(average_hThread);
+
+	delete[] arr;
 
 	return 0;
 }
