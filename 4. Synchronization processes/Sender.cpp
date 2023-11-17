@@ -8,9 +8,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	string binaryFileName = argv[1];
-	fstream file;
-	int option;
+    string binaryFileName = argv[1];
+    fstream file;
+    int option;
     char message[20];
 
     HANDLE hStartEvent = OpenEvent(EVENT_MODIFY_STATE, FALSE, L"Process Started");
@@ -35,23 +35,24 @@ int main(int argc, char* argv[])
 
     SetEvent(hStartEvent);
 
+    while (true) 
+    {
+	    
 	cout << "Choose an action: \n";
 	cout << "Press \"1\" to  write message \n";
 	cout << "Press \"0\" to exit\n";
 	cin >> option;
-
-	while (true) 
-    {
-		if(option == 0)
-		{
-			cout << "The process is finish ";
-			break;
-		}
+	    
+	if(option == 0)
+	{
+		cout << "The process is finish ";
+		break;
+	}
 
         if(option == 1)
-		{
+	{
             WaitForSingleObject(hMutex, INFINITE);
-            file.open(binaryFileName, std::ios::out | std::ios::app);
+            file.open(binaryFileName, std::ios::out | std::ios::app | std::ios::trunc);
 
             string msg;
             cout << "Input message to add\n";
@@ -80,27 +81,20 @@ int main(int argc, char* argv[])
                 ReleaseSemaphore(hOutputReadySemaphore, 1, NULL);
                 ReleaseSemaphore(hInputReadySemaphore, 1, NULL);
 
-                for (int i = 0; i < 20; i++)
-                {
-                    file << message[i];
-                }
-
+               _getch();
             }
             else 
             {
+		file.open(binaryFileName, std::ios::out | std::ios::app);
+		    
                 for (int i = 0; i < 20; i++)
                 {
                     file << message[i];
                 }
-            }
-
-            file.close();
-
-            cout << "Choose an action: \n";
-			cout << "Press \"1\" to  write message \n";
-			cout << "Press \"0\" to exit\n";
-			cin >> option;			
-		}
+		    
+		file.close();
+            }		
+	}
         
         if (option != 0 && option != 1)
 		{
