@@ -27,7 +27,7 @@ int main()
 	cout << "Enter amount of notes: \n";
 	cin >> amountOfNotes;
 
-	file.open(binaryFileName, std::ios::out);
+	file.open(binaryFileName, std::ios::out | std::ios::trunc);
 	file.close();
 
 	cout << "Enter amount of senders processes: \n";
@@ -76,16 +76,16 @@ int main()
 
 	WaitForMultipleObjects(amountOfSenders, hEventStarted, TRUE, INFINITE);
 	ReleaseMutex(hMutex);
-
-	cout << "\nChoose an action: \n";
-	cout << "Press \"1\" to  read message \n";
-	cout << "Press \"0\" to exit\n";
-	cin >> option;
-
+	
 	file.open(binaryFileName, std::ios::in);
 
 	while (true)
 	{
+		cout << "\nChoose an action: \n";
+		cout << "Press \"1\" to  read message \n";
+		cout << "Press \"0\" to exit\n";
+		cin >> option;
+		
 		if (option == 0)
 		{
 			cout << "The process is finish ";
@@ -101,26 +101,21 @@ int main()
 
 			ReleaseSemaphore(hOutputReadySemaphore, 1, NULL);
 			ReleaseMutex(hMutex);
-
-			cout << "Choose an action: \n";
-			cout << "Press \"1\" to  read message \n";
-			cout << "Press \"0\" to exit\n";
-			cin >> option;
 		}
 
-	    if (option != 0 && option != 1)
-		{
+	        if (option != 0 && option != 1)
+	        {
 			cout << "Incorrect input\n Try again...";
 			cin >> option;
-		}
-	}
+	        }
+        }
 	
 	for (int i = 0; i < amountOfSenders; i++)
 	{
 		CloseHandle(hEventStarted[i]);
 	}
 
-    CloseHandle(hInputReadySemaphore);
+        CloseHandle(hInputReadySemaphore);
 	CloseHandle(hOutputReadySemaphore);
 
 	return 0;
