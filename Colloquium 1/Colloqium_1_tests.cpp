@@ -1,5 +1,5 @@
-#include <gtest/gtest.h>
-#include "Colloquium_1.h"
+#include "pch.h"
+#include "D:\Program\Colloquium_1.2\Colloquium_1.2\Source.cpp"
 
 TEST(ReverseList, test_reverse_ints)
 {
