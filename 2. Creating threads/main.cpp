@@ -9,39 +9,8 @@ int max_value = 0;
 int min_value = 0;
 int sum_of_elements = 0;
 int arifm = 0;
-int array[5] = {2,5,8,9,7};
 
 CRITICAL_SECTION cs;
-
-int minim_value(int* array)
-{
-	int min_value = array[0];
-
-	for (int i = 0; i < 5; i++)
-	{
-		if (array[i] <= min_value)
-		{
-			min_value = array[i];
-		}
-	}
-
-	return min_value;
-}
-
-int maxim_value(int* array)
-{
-	int max_value = array[0];
-
-	for (int i = 0; i < 5; i++)
-	{
-		if (array[i] >= max_value)
-		{
-			max_value = array[i];
-		}
-	}
-
-	return max_value;
-}
 
 DWORD WINAPI min_max(LPVOID)
 {
