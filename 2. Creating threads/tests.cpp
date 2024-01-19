@@ -1,38 +1,55 @@
 #include "pch.h"
-#include "D:\Program\creating_threads\creating_threads\main.cpp"
+#include "D:\Program\creating_threads\creating_threads\Func.cpp"
 
-TEST(MinimValueTest1, ReturnsCorrectMinValue)
+TEST(MinMaxTest, ReturnsCorrectPlusMinMaxValue) 
 {
-    int array[5] = { 5, 2, 9, 1, 3 };
-
-    int result = minim_value(array);
-
-    EXPECT_EQ(1, result);
+	std::vector<int> vec = { 5, 2, 9, 1, 3 };
+	int min, max;
+    
+	min_max(min, max, vec);
+    
+	ASSERT_EQ(min, 1);
+	ASSERT_EQ(max, 9);
 }
 
-TEST(MinimValueTest2, ReturnsCorrectMinValue)
+TEST(MinMaxTest, ReturnsCorrectMinusMinMaxValue) 
 {
-    int array[5] = { -5, -2, -9, -1, -3 };
-
-    int result = minim_value(array);
-
-    EXPECT_EQ(-9, result);
+	std::vector<int> vec = { -5, -2, -9, -1, -3 };
+	int min, max;
+    
+	min_max(min, max, vec);
+    
+	ASSERT_EQ(min, -9);
+	ASSERT_EQ(max, -1);
 }
 
-TEST(MaximValueTest1, ReturnsMaximumValue)
+TEST(MinMaxTest, MinMaxSameValueTest) 
 {
-    int array[5] = { 10, 5, 8, 12, 3 };
-
-    int result = maxim_value(array);
-
-    EXPECT_EQ(result, 12); 
+	std::vector<int> vec = { 1,1,1 };
+	int min, max;
+    
+	min_max(min, max, vec);
+    
+	ASSERT_EQ(min, 1);
+	ASSERT_EQ(max, 1);
 }
 
-TEST(MaximValueTest2, ReturnsMaximumValue)
+TEST(AverageTest, BasicTest) 
 {
-    int array[] = { -10, -5, -8, -12, -3 };
+	std::vector<int> vec = { 3, 1, 4, 1, 5, 9 };
+	int aver = 0;
+    
+	average(aver, vec);
+    
+	ASSERT_EQ(aver, 3);
+}
 
-    int result = maxim_value(array);
-
-    EXPECT_EQ(result, -3); 
+TEST(AverageTest, LargeVectorTest) 
+{
+	std::vector<int> vec(10000, 5);
+	int aver = 0;
+    
+	average(aver, vec);
+    
+	ASSERT_EQ(aver, 5);
 }
